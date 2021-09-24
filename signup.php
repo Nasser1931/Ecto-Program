@@ -90,21 +90,11 @@ $(document).ready(function() {
             },
             name: {
                 required: '<div class="alert alert-danger"><i class="bi bi-x-circle"></i><span style="color:red;text-align:center;">Please enter your valid Email </span></div>',
-                numeric: '<div class="alert alert-danger"><i class="bi bi-x-circle"></i><span style="color:red;text-align:center;">Name should only contain letters!</span></div>',
                 minlength: '<div class="alert alert-danger"><i class="bi bi-x-circle"><span style="color:red;text-align:center;">Please Enter at least 3 characters </span></div>'
 
             },
-            country: {
-                required: '<div class="alert alert-danger"><i class="bi bi-x-circle"></i><span style="color:red;text-align:center;">Please enter your Country </span></div>'
-            },
             select: {
-                required: '<div class="alert alert-danger"><i class="bi bi-x-circle"></i><span style="color:red;text-align:center;">Please select your user type </span></div>'
-            },
-            phone: {
-                required: '<div class="alert alert-danger"><i class="bi bi-x-circle"></i><span style="color:red;text-align:center;">Please Enter your Phone number </span></div>',
-                numeric: '<div class="alert alert-danger"><i class="bi bi-x-circle"></i><span style="color:red;text-align:center;">Phone should only contain numbers!</span></div>'
-
-
+                required: '<div class="alert alert-danger"><i class="bi bi-x-circle"></i><span style="color:red;text-align:center;">Please select your Gender </span></div>'
             }
 
 
@@ -119,7 +109,7 @@ $(document).ready(function() {
 });
 </script>
 
-<form method="post" <?php echo $_SERVER['PHP_SELF']; ?>>
+<form id="lol" method="post" <?php echo $_SERVER['PHP_SELF']; ?>>
 
     <div class="container">
         <div class="mb-3">
@@ -128,7 +118,7 @@ $(document).ready(function() {
         </div>
         <div class="mb-3">
             <label for="name" class="form-label">Name</label>
-            <input type="text" class="form-control" id="" name="name">
+            <input type="text" class="form-control" id="name" name="name">
         </div>
         <div class="mb-3">
             <label for="password" class="form-label">Password</label>
@@ -143,7 +133,6 @@ $(document).ready(function() {
 
             <div class="dropdown">
                 <select class="form-select" aria-label="Default select example" name="select">
-                    <option selected>Select Your Gender</option>
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
                 </select>
@@ -167,24 +156,26 @@ if (isset($_REQUEST['register'])) {
     $name = $_REQUEST['name'];
     $password = $_REQUEST['pass1'];
     $select = $_REQUEST['select'];
-    $get_users = "SELECT * FROM users where email='$email'";
+    $get_users = "SELECT * FROM users where 
+    email='$email'";
     $search_query = mysqli_query($conn, $get_users);
     $get_rows = mysqli_affected_rows($conn);
     if ($get_rows > 0) {
-        header('Location: ' . 'index.php');
+        echo '<script language="javascript">';
+        echo 'alert("user already registered")';
+        echo '</script>';
     } else {
 
         $fpass = password_hash($password, PASSWORD_BCRYPT, array('cost' => 12));
         $sql = "INSERT INTO users (email, name, gender, password) 
             VALUES ('$email', '$name', '$select', '$fpass')";
         if ($conn->query($sql) == TRUE) {
-            echo '<script language="javascript">';
-            echo 'alert("Thank you for registering")';
-            echo 'window.location.replace("index.php");';
-            echo '</script>';
+            echo '<script>alert("user registered!")</script>';
+            echo "<script>window.location.href='index.php'</script>";
         } else {
             echo "filed to connect" . $conn->error;
         }
     }
 }
+
 ?>
