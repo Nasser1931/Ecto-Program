@@ -65,13 +65,6 @@ $(document).ready(function() {
                 minlength: 3,
                 numeric: false // default
             },
-            phone: {
-                required: true,
-                numeric: true
-            },
-            country: {
-                required: true
-            },
             select: {
                 required: true
             }
